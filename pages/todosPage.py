@@ -62,3 +62,16 @@ class TodosPage:
             has=self.page.locator("label", has_text=task)
         )
         return todo_li.locator("input.toggle")
+
+    def getTodoDestroyButton(self, task):
+        todo_li = self.todoList.locator(
+            "li",
+            has=self.page.locator("label", has_text=task)
+        )
+        return todo_li.locator("button")
+
+    def getTestButton(self, task):
+        print(task)
+        return self.todoList.locator(
+            "li:nth-child(2) button.destroy",
+        )
