@@ -56,20 +56,14 @@ class TodosPage:
     def getTodoCount(self) -> Locator:
         return self.todoCount
 
-    def getItemLabelled(self, task):
-        return self.todoList.locator(
-            "li",
-            has=self.page.locator("label", has_text=task)
-        )
-
     def getTodoCheckbox(self, task):
-        todo_li = self.getItemLabelled(task)
+        todo_li = self.todoListItem(task)
         return todo_li.locator("input.toggle")
 
     def getTodoDestroyButton(self, task):
-        todo_li = self.getItemLabelled(task)
+        todo_li = self.todoListItem(task)
         return todo_li.locator("button")
 
     def getItemToggleButton(self, task):
-        todo_li = self.getItemLabelled(task)
+        todo_li = self.todoListItem(task)
         return todo_li.locator("input.toggle")
