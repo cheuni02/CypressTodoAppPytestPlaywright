@@ -10,6 +10,7 @@ class TestLookAndFeel():
         todosPage = TodosPage(page)
         todosPage.goto()
         yield todosPage
+        page.context.clear_cookies()
 
     def test_that_2_jobs_are_already_displayed(self, todosPage) -> None:
         expect(todosPage.todoListItem("Pay electric bill")).to_be_visible()
