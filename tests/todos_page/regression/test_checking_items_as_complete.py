@@ -36,8 +36,6 @@ class TestCheckingItemAsComplete:
     def test_marking_one_task_as_complete(self, setup, page: Page):
         tasks = setup.listTasks
         selectedTask = tasks[random.randrange(len(tasks))]
-        print(f"selectedTask: {selectedTask}")
-
-        expect(setup.page.getItemLabelled(selectedTask)).not_to_have_class("completed")
+        expect(setup.page.todoListItem(selectedTask)).not_to_have_class("completed")
         setup.page.getItemToggleButton(selectedTask).click()
-        expect(setup.page.getItemLabelled(selectedTask)).to_have_class("completed")
+        expect(setup.page.todoListItem(selectedTask)).to_have_class("completed")

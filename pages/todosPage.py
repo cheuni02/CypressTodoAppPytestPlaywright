@@ -60,9 +60,13 @@ class TodosPage:
         todo_li = self.todoListItem(task)
         return todo_li.locator("input.toggle")
 
+    def getTodoDestroyView(self, task):
+        todo_li = self.todoListItem(task)
+        return todo_li.locator("div.view")
+
     def getTodoDestroyButton(self, task):
         todo_li = self.todoListItem(task)
-        return todo_li.locator("button")
+        return todo_li.locator("button.destroy")
 
     def getItemToggleButton(self, task):
         todo_li = self.todoListItem(task)

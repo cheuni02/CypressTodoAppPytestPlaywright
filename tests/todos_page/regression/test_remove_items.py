@@ -12,10 +12,12 @@ class TestRemoveItems:
 
     def test_remove_item_via_X_button(self, todosPage: TodosPage):
         itemLabel = "Pay electric bill"
-        itemXbutton = todosPage.getTodoDestroyButton(itemLabel)
+        destroy = todosPage.getTodoDestroyButton(itemLabel)
+        view = todosPage.getTodoDestroyView(itemLabel)
+        view.wait_for(state="attached")
         assert len(todosPage.getTodoListItems()) == 2
-        todosPage.todoListItem(itemLabel).hover()
-        expect(itemXbutton).to_be_visible()
-        itemXbutton.click()
+        expect(view).to_be_visible()
+        view.hover()
+        destroy.click()
         assert len(todosPage.getTodoListItems()) == 1
         expect(todosPage.todoListItem("Walk the dog")).to_be_visible()
