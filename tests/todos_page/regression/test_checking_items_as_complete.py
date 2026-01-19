@@ -33,9 +33,23 @@ class TestCheckingItemAsComplete:
         )
         page.context.clear_cookies()
 
-    def test_marking_one_task_as_complete(self, setup, page: Page):
+    def test_marking_one_task_as_complete(self, setup):
         tasks = setup.listTasks
         selectedTask = tasks[random.randrange(len(tasks))]
         expect(setup.page.todoListItem(selectedTask)).not_to_have_class("completed")
         setup.page.getItemToggleButton(selectedTask).click()
         expect(setup.page.todoListItem(selectedTask)).to_have_class("completed")
+
+    def test_marking_two_or_more_task_as_complete(self, setup):
+        totalTasksAdded = 2 + len(setup.listTasks)
+        numberOfTasksToComplete = random.randrange(2,len(setup.listTasks))
+        listTasksToComplete = []
+        for _ in range(numberOfTasksToComplete):
+            randomTask = setup.listTasks[random.randrange(len(setup.listTasks))]
+            while randomTask in listTasksToComplete:
+                randomTask = setup.listTasks[random.randrange(len(setup.listTasks))]
+            listTasksToComplete.append(randomTask)
+        for task in listTasksToComplete:
+            setup.page.getItemToggleButton(task).click()
+        assert len(setup.page.getTodoListItems()) == totalTasksAdded
+        expect(setup.page.getTodoCount()).to_have_text(f"{totalTasksAdded - numberOfTasksToComplete} items left")
