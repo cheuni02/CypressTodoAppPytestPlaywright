@@ -26,34 +26,24 @@ class TestAddItems:
         )
         page.context.clear_cookies()
 
-    def test_adding_single_appends_it_to_list(self, setup):
+    def test_adding_single_appends_it_to_list(self, setup: TodosContext):
         expect(setup.page.todoListItem(setup.item)).to_be_visible()
 
-    def test_todo_count_incremented_once_item_added(self, setup):
+    def test_todo_count_incremented_once_item_added(self, setup: TodosContext):
         expect(setup.page.getTodoCount()).to_have_text("3 items left")
 
-    def test_3_items_shown_after_1_added(self, setup):
+    def test_3_items_shown_after_1_added(self, setup: TodosContext):
         assert len(setup.page.getTodoListItems()) == 3
 
-    def test_add_n_more_items(self, setup) -> None:
-        listPotentialTasks = [
-            "feed the goldfish",
-            "walk the dog",
-            "have a haircut",
-            "cook your girlfriend something nice",
-            "fill up the petrol",
-            "take the trash out",
-            "jog up to 5km"
-        ]
-
-        randomNumberToAdd = random.randrange(1, len(listPotentialTasks))
+    def test_add_n_more_items(self, todosListFixture: list[str], setup: TodosContext) -> None:
+        randomNumberToAdd = random.randrange(1, len(todosListFixture))
         expectedNumItems = 3 + randomNumberToAdd
         expectedTodoCountMsg = f"{expectedNumItems} items left"
         toBeAdded = []
         while randomNumberToAdd > 0:
-            selectedTask = random.choice(listPotentialTasks)
+            selectedTask = random.choice(todosListFixture)
             while selectedTask in toBeAdded:
-                selectedTask = random.choice(listPotentialTasks)
+                selectedTask = random.choice(todosListFixture)
             toBeAdded.append(selectedTask)
             randomNumberToAdd -= 1
 

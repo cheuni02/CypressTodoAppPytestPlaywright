@@ -41,3 +41,19 @@ def browser_context_args(browser_context_args):
         browser_context_args["record_video_dir"] = "videos/"
 
     return browser_context_args
+
+# -------------------------
+# Test data reusable fixtures
+# -------------------------
+
+@pytest.fixture(scope="session")
+def todosListFixture():
+    return [
+            "feed the goldfish",
+            "call your best friend",
+            "have a haircut",
+            "cook your girlfriend something nice",
+            "fill up the petrol",
+            "take the trash out",
+            "jog up to 5km"
+        ]

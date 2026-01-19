@@ -13,34 +13,25 @@ class SetupContext:
 
 class TestCheckingItemAsComplete:
     @pytest.fixture(scope='function')
-    def setup(self, page: Page):
-        listPotentialTasks = [
-            "feed the goldfish",
-            "call your best friend",
-            "have a haircut",
-            "cook your girlfriend something nice",
-            "fill up the petrol",
-            "take the trash out",
-            "jog up to 5km"
-        ]
+    def setup(self, todosListFixture: list[str], page: Page):
         todosPage = TodosPage(page)
         todosPage.goto()
-        for task in listPotentialTasks:
+        for task in todosListFixture:
             todosPage.enterItem(task)
         yield SetupContext(
             page = todosPage,
-            listTasks = listPotentialTasks
+            listTasks = todosListFixture
         )
         page.context.clear_cookies()
 
-    def test_marking_one_task_as_complete(self, setup):
+    def test_marking_one_task_as_complete(self, setup: SetupContext):
         tasks = setup.listTasks
         selectedTask = tasks[random.randrange(len(tasks))]
         expect(setup.page.todoListItem(selectedTask)).not_to_have_class("completed")
         setup.page.getItemToggleButton(selectedTask).click()
         expect(setup.page.todoListItem(selectedTask)).to_have_class("completed")
 
-    def test_marking_two_or_more_task_as_complete(self, setup):
+    def test_marking_two_or_more_task_as_complete(self, setup: SetupContext):
         totalTasksAdded = 2 + len(setup.listTasks)
         numberOfTasksToComplete = random.randrange(2,len(setup.listTasks))
         listTasksToComplete = []
